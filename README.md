@@ -16,5 +16,9 @@ GitHub Pages용 BIM IFC 브라우저 뷰어입니다.
 
 ## 재료 산출 API
 
-GitHub Pages는 정적 호스팅이므로 IfcOpenShell을 실행할 수 없습니다. 재료 체적 자동 산출을 사용하려면 별도의 HTTPS API 서버를 실행한 뒤 `index.html`의 `window.BIM_API_BASE`에 API 주소를 설정해야 합니다. API 구현 초안은 `bim_local_server.py`와 `ifc_material_takeoff.py`에 있습니다.
+GitHub Pages는 정적 호스팅이므로 IfcOpenShell을 실행할 수 없습니다. 공개 페이지에서 IFC 재료 체적을 자동 산출하려면 별도의 HTTPS API 서버가 필요합니다.
 
+- 페이지의 **재료 산출 API 주소** 입력란에 API 기본 주소를 입력하고 **API 주소 저장**을 누릅니다.
+- API는 `POST /api/material-takeoff` 경로에서 IFC 바이너리를 받고 JSON 결과를 반환해야 합니다.
+- `bim_local_server.py`는 로컬 검증용 API이며 CORS 헤더가 포함되어 있습니다. 공개 배포 시에는 이 서버를 HTTPS가 되는 Python 호스팅에 배포하세요.
+- API 주소가 비어 있어도 3D IFC 뷰어는 정상 동작하며, 재료 패널은 실패 대신 API 설정 안내를 표시합니다.

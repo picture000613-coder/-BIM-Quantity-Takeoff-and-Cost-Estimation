@@ -47,6 +47,8 @@
     .cost-panel { margin-top:16px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; }
     .cost-panel h2 { margin:0 0 5px; color:var(--navy); }
     .cost-panel p { margin:0 0 12px; color:#607284; font-size:13px; }
+    .api-config { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 0 12px; }
+    .api-config input { flex:1 1 320px; min-width:220px; border:1px solid #cbd6e2; border-radius:8px; padding:10px 12px; font:inherit; }
     .material-toolbar { display:flex; flex-wrap:wrap; gap:9px; margin-bottom:12px; align-items:center; }
     .material-toolbar input[type=number] { width:170px; border:1px solid #cbd6e2; border-radius:8px; padding:10px 12px; font:inherit; }
     .price-input { width:130px; border:1px solid #cbd6e2; border-radius:6px; padding:7px 8px; text-align:right; }
@@ -89,6 +91,11 @@
     <section class="cost-panel">
       <h2>층별 재료 체적 및 재료비</h2>
       <p>IFC를 열면 IfcOpenShell이 재료층과 형상을 분석합니다. 단가는 원/m³ 기준이며 브라우저에 자동 저장됩니다.</p>
+      <div class="api-config">
+        <input id="materialApiUrl" type="url" placeholder="재료 산출 API 주소 (선택)" inputmode="url">
+        <button id="saveApiUrl" class="secondary">API 주소 저장</button>
+        <span id="apiHint" class="muted">API 주소를 저장하면 IFC 재료 자동 산출을 사용할 수 있습니다.</span>
+      </div>
       <div class="material-toolbar">
         <select id="materialLevel"><option value="">모든 층</option></select>
         <input id="materialSearch" type="search" placeholder="재료 이름 검색">
@@ -107,7 +114,7 @@
   <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-    const MATERIAL_API_BASE = window.BIM_API_BASE || '';
+    let MATERIAL_API_BASE = window.BIM_API_BASE || localStorage.getItem('bim-material-api-base') || '';
 
     let ifcApi = null;
     let scene, camera, renderer, controls, modelGroup;
@@ -164,6 +171,12 @@
     let materialView = [];
     let unitPrices = JSON.parse(localStorage.getItem('bim-material-unit-prices') || '{}');
     const $ = id => document.getElementById(id);
+    $('materialApiUrl').value = MATERIAL_API_BASE;
+    function normalizeApiBase(value) { return text(value).trim().replace(/\/$/, ''); }
+    function updateApiHint(message) {
+      $('apiHint').textContent = message || (MATERIAL_API_BASE ? `연결 주소: ${MATERIAL_API_BASE}` : 'API 주소를 저장하면 IFC 재료 자동 산출을 사용할 수 있습니다.');
+    }
+    updateApiHint();
     const text = v => v === undefined || v === null ? '' : String(v);
     function parseCsv(s) {
       const lines = s.replace(/^\uFEFF/,'').trim().split(/\r?\n/); if (!lines.length || !lines[0]) return [];
@@ -218,7 +231,16 @@
     }
     async function analyzeIfcMaterials(file) {
       $('takeoffStatus').textContent = 'IfcOpenShell 재료·체적 분석 중...';
-      if (!MATERIAL_API_BASE) throw new Error('공개 배포판에는 재료 산출 API 주소가 설정되지 않았습니다.');
+      if (!MATERIAL_API_BASE) {
+        // GitHub Pages에는 Python/IfcOpenShell을 실행할 수 없으므로 API가 없는
+        // 환경에서도 3D 뷰어가 실패 상태로 끝나지 않도록 안내 상태로 둡니다.
+        materialAll = [];
+        materialView = [];
+        renderMaterials();
+        $('takeoffStatus').textContent = '3D 모델은 열렸습니다. 재료 자동 산출은 API 주소를 저장하세요.';
+        updateApiHint('공개 페이지는 정적 호스팅입니다. HTTPS 재료 산출 API 주소가 필요합니다.');
+        return;
+      }
       const response = await fetch(`${MATERIAL_API_BASE}/api/material-takeoff`, {method:'POST', headers:{'Content-Type':'application/octet-stream'}, body:file});
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || `재료 분석 실패 (${response.status})`);
@@ -366,6 +388,13 @@
     $('search').addEventListener('input',render); $('level').addEventListener('change',render); $('clear').addEventListener('click',()=>{$('search').value='';$('level').value='';render();});
     $('materialLevel').addEventListener('change', renderMaterials);
     $('materialSearch').addEventListener('input', renderMaterials);
+    $('saveApiUrl').addEventListener('click', () => {
+      MATERIAL_API_BASE = normalizeApiBase($('materialApiUrl').value);
+      if (MATERIAL_API_BASE) localStorage.setItem('bim-material-api-base', MATERIAL_API_BASE);
+      else localStorage.removeItem('bim-material-api-base');
+      updateApiHint(MATERIAL_API_BASE ? `연결 주소가 저장되었습니다: ${MATERIAL_API_BASE}` : 'API 주소를 비웠습니다.');
+      $('takeoffStatus').textContent = MATERIAL_API_BASE ? 'API 주소 저장 완료 · IFC를 다시 열어 분석하세요.' : '3D 모델은 사용할 수 있지만 재료 자동 산출 API가 없습니다.';
+    });
     $('materialRows').addEventListener('change', event => {
       if (!event.target.classList.contains('price-input')) return;
       const material = decodeURIComponent(event.target.dataset.material);
