@@ -74,7 +74,7 @@ def _material_parts(element):
     return [(getattr(material, "Name", None) or material.is_a(), 1.0, "set")]
 
 
-def analyze_ifc(ifc_path):
+def analyze_ifc(ifc_path, allow_geometry=True):
     model = ifcopenshell.open(ifc_path)
     try:
         volume_scale = ifcopenshell.util.unit.calculate_unit_scale(model, "VOLUMEUNIT")
@@ -93,7 +93,10 @@ def analyze_ifc(ifc_path):
             continue
         volume = _quantity_volume(element, volume_scale)
         method = "quantity"
-        if volume is None:
+        # 공개 Render 인스턴스에서는 형상 재생성이 CPU/메모리를 크게 사용하고
+        # 일부 IFC 형상에서 IfcOpenShell 네이티브 예외를 일으킬 수 있다.
+        # 기본값은 IFC에 저장된 QTO만 사용하며, 로컬에서 필요할 때만 켠다.
+        if volume is None and allow_geometry:
             volume = _geometry_volume(element, settings)
             method = "geometry"
         if volume is None:
