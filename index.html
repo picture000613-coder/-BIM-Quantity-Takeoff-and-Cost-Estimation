@@ -19,36 +19,43 @@
     :root { color-scheme: light; --navy:#14324d; --blue:#2368a2; --line:#dfe6ee; --bg:#f3f6f9; }
     * { box-sizing: border-box; }
     body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; color:#17202a; background:var(--bg); }
-    header { background:linear-gradient(120deg,#14324d,#246b9f); color:#fff; padding:20px clamp(16px,4vw,42px); }
-    header h1 { margin:0 0 5px; font-size:clamp(22px,4vw,32px); }
-    header p { margin:0; opacity:.86; }
-    main { max-width:1500px; margin:auto; padding:18px clamp(12px,3vw,34px) 40px; }
-    .toolbar,.stats { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; }
-    .toolbar { background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; }
+    header { background:linear-gradient(120deg,#14324d,#246b9f); color:#fff; padding:16px clamp(16px,4vw,42px); }
+    header .header-inner { max-width:1280px; margin:auto; }
+    header h1 { margin:0 0 3px; font-size:clamp(21px,3vw,29px); }
+    header p { margin:0; opacity:.82; font-size:13px; }
+    main { max-width:1280px; margin:auto; padding:16px clamp(10px,2.5vw,24px) 40px; }
+    .toolbar,.stats { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    .toolbar { background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; margin-bottom:12px; }
+    .top-toolbar { width:100%; box-sizing:border-box; flex-wrap:nowrap; }
+    .top-toolbar .drop { min-width:260px; }
+    .top-toolbar #resetAll { margin-left:auto; flex:0 0 auto; }
     button,.file-label { border:0; border-radius:8px; padding:10px 14px; background:var(--blue); color:#fff; font:inherit; cursor:pointer; }
     button.secondary { background:#e8eef5; color:#18344e; }
+    button.future { background:#4c7598; }
     input[type=file] { display:none; }
     input[type=search],select { border:1px solid #cbd6e2; border-radius:8px; padding:10px 12px; font:inherit; background:#fff; }
     input[type=search] { flex:1 1 220px; min-width:170px; }
-    .drop { border:2px dashed #aebdca; border-radius:10px; padding:11px 14px; color:#4c6072; flex:1 1 300px; text-align:center; cursor:pointer; transition:.15s ease; }
-    .drop strong { display:block; color:#244762; }
-    .drop small { display:block; margin-top:3px; }
+    .drop { border:1px dashed #87b7a5; border-radius:9px; padding:7px 12px; color:#4c6072; flex:1 1 280px; text-align:center; cursor:pointer; transition:.15s ease; background:#f2fbf7; }
+    .drop strong { display:block; color:#244762; font-size:13px; }
+    .drop small { display:block; margin-top:2px; font-size:11px; }
     .drop.over { border-color:var(--blue); background:#edf6ff; transform:translateY(-1px); }
     .drop.error { border-color:#c33; background:#fff1f1; color:#9e2525; }
     .drop.success { border-color:#258454; background:#effbf5; }
-    .stat { background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 16px; min-width:135px; }
-    .stat b { display:block; font-size:21px; color:var(--navy); }
+    .stat { background:#fff; border:1px solid var(--line); border-radius:9px; padding:10px 13px; min-width:120px; }
+    .stat b { display:block; font-size:18px; color:var(--navy); }
     .stat span { color:#617284; font-size:12px; }
-    .workspace { display:grid; grid-template-columns:minmax(320px,1fr) minmax(420px,1.25fr); gap:14px; align-items:start; }
+    .dashboard { display:flex; flex-direction:column; gap:12px; }
+    .workspace { display:grid; grid-template-columns:minmax(320px,1fr) minmax(420px,1.05fr); gap:12px; align-items:stretch; }
     .viewer { min-height:560px; background:#101820; border:1px solid #20384e; border-radius:12px; overflow:hidden; position:relative; }
     #viewerContainer { width:100%; height:560px; }
     .viewer-note { position:absolute; left:12px; bottom:10px; color:#d5e4f2; background:#13283acc; padding:7px 10px; border-radius:7px; font-size:12px; }
     .table-wrap { background:#fff; border:1px solid var(--line); border-radius:12px; overflow:auto; box-shadow:0 2px 9px #1c38520b; }
-    .cost-panel { margin-top:16px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; }
+    .schedule-panel { display:flex; min-width:0; flex-direction:column; gap:10px; }
+    .schedule-panel .stats { min-height:56px; }
+    .schedule-panel .table-wrap { flex:1; max-height:494px; }
+    .cost-panel { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; }
     .cost-panel h2 { margin:0 0 5px; color:var(--navy); }
     .cost-panel p { margin:0 0 12px; color:#607284; font-size:13px; }
-    .api-config { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 0 12px; }
-    .api-config input { flex:1 1 320px; min-width:220px; border:1px solid #cbd6e2; border-radius:8px; padding:10px 12px; font:inherit; }
     .material-toolbar { display:flex; flex-wrap:wrap; gap:9px; margin-bottom:12px; align-items:center; }
     .material-toolbar input[type=number] { width:170px; border:1px solid #cbd6e2; border-radius:8px; padding:10px 12px; font:inherit; }
     .price-input { width:130px; border:1px solid #cbd6e2; border-radius:6px; padding:7px 8px; text-align:right; }
@@ -56,51 +63,42 @@
     .cost-summary { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px; }
     .cost-summary .stat { min-width:180px; }
     table { width:100%; border-collapse:collapse; min-width:1050px; }
+    table.layer-table { min-width:650px; }
+    .visibility-check { width:17px; height:17px; accent-color:var(--blue); cursor:pointer; }
     th,td { padding:10px 11px; border-bottom:1px solid #edf0f3; text-align:left; font-size:13px; white-space:nowrap; }
     th { position:sticky; top:0; background:#edf3f8; color:#30485e; z-index:1; }
     tbody tr:hover { background:#f1f8ff; }
     .empty { padding:48px 20px; text-align:center; color:#627486; }
     .muted { color:#6d7d8c; font-size:12px; }
-    @media (max-width:900px) { .workspace { grid-template-columns:1fr; } #viewerContainer { height:430px; } .viewer { min-height:430px; } }
+    @media (max-width:900px) { .top-toolbar { flex-wrap:wrap; } .top-toolbar .drop { order:2; flex-basis:100%; } .workspace { grid-template-columns:1fr; } #viewerContainer { height:430px; } .viewer { min-height:430px; } .schedule-panel .table-wrap { max-height:430px; } }
     @media (max-width:640px) { header { padding:17px 14px; } main { padding:12px 8px 26px; } .toolbar { padding:9px; } .stat { flex:1 1 110px; min-width:0; } }
   </style>
 </head>
 <body>
-  <header><h1>BIM 벽 일람표 뷰어</h1><p>IFC에서 추출한 벽 객체를 PC와 휴대폰에서 확인합니다.</p></header>
+  <header><div class="header-inner"><h1>BIM 벽 일람표 뷰어</h1><p>IFC 모델의 벽·재료·체적과 예상 재료비를 한 화면에서 확인합니다.</p></div></header>
   <main>
-    <section class="toolbar">
-      <label class="file-label" for="fileInput">JSON/CSV 열기</label>
-      <input id="fileInput" type="file" accept=".json,.csv,application/json,text/csv" multiple>
+    <section class="toolbar top-toolbar">
       <label class="file-label" for="ifcInput">IFC 3D 열기</label>
       <input id="ifcInput" type="file" accept=".ifc,.IFC">
-      <input id="dropInput" type="file" accept=".ifc,.IFC,.json,.csv,application/json,text/csv" multiple>
-      <div id="drop" class="drop" role="button" tabindex="0"><strong>IFC·JSON·CSV 파일을 여기에 끌어놓기</strong><small>IFC와 일람표를 함께 놓아도 자동으로 구분합니다.</small></div>
-      <input id="search" type="search" placeholder="층, 이름, Tag, GlobalId 검색">
-      <select id="level"><option value="">모든 층</option></select>
-      <button id="clear" class="secondary">초기화</button>
+      <button class="future" data-future-format="SketchUp">SketchUp</button>
+      <button class="future" data-future-format="Rhino">Rhino 3DM</button>
+      <input id="dropInput" type="file" accept=".ifc,.IFC">
+      <div id="drop" class="drop" role="button" tabindex="0"><strong>IFC 파일을 여기에 끌어놓기</strong><small>모델을 열면 층·이름·재료별 레이어가 자동 생성됩니다.</small></div>
+      <button id="resetAll" class="secondary">초기화</button>
     </section>
-    <section class="stats">
-      <div class="stat"><b id="count">0</b><span>표시 벽 수</span></div>
-      <div class="stat"><b id="external">0</b><span>외벽</span></div>
-      <div class="stat"><b id="bearing">0</b><span>내력벽</span></div>
-      <div class="stat"><b id="source" class="muted">파일을 선택하세요</b><span>원본</span></div>
-    </section>
-    <section class="workspace"><div class="viewer"><div id="viewerContainer"></div><div id="viewerNote" class="viewer-note">IFC 파일을 열면 3D 모델이 표시됩니다.</div></div><div class="table-wrap"><table><thead><tr>
-      <th>층</th><th>Tag</th><th>이름</th><th>IFC 타입</th><th>외벽</th><th>내력</th><th>방화 등급</th><th>길이</th><th>면적</th><th>체적</th><th>GlobalId</th>
-    </tr></thead><tbody id="rows"><tr><td colspan="11" class="empty">IFC 벽 일람표 JSON 또는 CSV 파일을 열어주세요.</td></tr></tbody></table></div></section>
+    <div class="dashboard">
+    <section class="workspace"><div class="viewer"><div id="viewerContainer"></div><div id="viewerNote" class="viewer-note">IFC 파일을 열면 3D 모델이 표시됩니다.</div></div><div class="schedule-panel"><section class="stats"><div class="stat"><b id="layerCount">0</b><span>레이어 수</span></div><div class="stat"><b id="visibleLayerCount">0</b><span>표시 레이어</span></div><div class="stat"><b id="hiddenLayerCount">0</b><span>숨김 레이어</span></div><div class="stat"><b id="source" class="muted">파일을 선택하세요</b><span>원본</span></div></section><div class="toolbar"><input id="layerSearch" type="search" placeholder="층, 이름, 재료, IFC 형식 검색"><select id="layerStorey"><option value="">모든 층</option></select><button id="showAllLayers" class="secondary">전체 표시</button><button id="hideAllLayers" class="secondary">전체 숨김</button></div><div class="table-wrap"><table class="layer-table"><thead><tr>
+      <th>표시</th><th>층</th><th>이름</th><th>재료</th><th>IFC 형식</th><th>객체 수</th>
+    </tr></thead><tbody id="layerRows"><tr><td colspan="6" class="empty">IFC 파일을 열면 표시 레이어가 생성됩니다.</td></tr></tbody></table></div></div></section>
     <section class="cost-panel">
       <h2>층별 재료 체적 및 재료비</h2>
       <p>IFC를 열면 IfcOpenShell이 재료층과 형상을 분석합니다. 단가는 원/m³ 기준이며 브라우저에 자동 저장됩니다.</p>
-      <div class="api-config">
-        <input id="materialApiUrl" type="url" placeholder="재료 산출 API 주소 (선택)" inputmode="url">
-        <button id="saveApiUrl" class="secondary">API 주소 저장</button>
-        <span id="apiHint" class="muted">API 주소를 저장하면 IFC 재료 자동 산출을 사용할 수 있습니다.</span>
-      </div>
       <div class="material-toolbar">
         <select id="materialLevel"><option value="">모든 층</option></select>
         <input id="materialSearch" type="search" placeholder="재료 이름 검색">
-        <input id="concretePrice" type="number" min="0" step="1000" placeholder="콘크리트 단가 원/m³">
-        <button id="applyConcrete">콘크리트 단가 일괄 적용</button>
+        <select id="bulkMaterial"><option value="concrete">콘크리트</option><option value="glass">유리·창호</option><option value="metal">금속·철·알루미늄</option><option value="wood">목재</option><option value="brick">벽돌·조적</option><option value="all">모든 재료</option></select>
+        <input id="bulkPrice" type="number" min="0" step="1000" placeholder="일괄 단가 원/m³">
+        <button id="applyBulkPrice">선택 재료군 단가 적용</button>
         <button id="exportMaterials" class="secondary">견적 CSV 저장</button>
       </div>
       <div class="cost-summary">
@@ -110,15 +108,22 @@
       </div>
       <div class="table-wrap"><table><thead><tr><th>층</th><th>재료</th><th>요소 수</th><th>체적 배분</th><th>체적(m³)</th><th>단가(원/m³)</th><th>재료비(원)</th></tr></thead><tbody id="materialRows"><tr><td colspan="7" class="empty">IFC 파일을 열면 재료 체적을 계산합니다.</td></tr></tbody></table></div>
     </section>
+    </div>
   </main>
   <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
     const DEFAULT_MATERIAL_API_BASE = 'https://bim-material-api.onrender.com';
-    let MATERIAL_API_BASE = window.BIM_API_BASE || localStorage.getItem('bim-material-api-base') || DEFAULT_MATERIAL_API_BASE;
+    const API_STARTUP_TIMEOUT_MS = 90000;
+    const API_ANALYSIS_TIMEOUT_MS = 240000;
+    const PAGE_PARAMS = new URLSearchParams(location.search);
+    // 예전 화면에서 저장한 localStorage 주소는 더 이상 사용하지 않습니다.
+    // 숨겨진 잘못된 주소 때문에 사용자가 API를 복구할 수 없는 상태를 막습니다.
+    const MATERIAL_API_BASE = PAGE_PARAMS.has('no-material-api') ? '' : (window.BIM_API_BASE || DEFAULT_MATERIAL_API_BASE);
 
     let ifcApi = null;
     let scene, camera, renderer, controls, modelGroup;
+    let modelLayers = new Map();
     async function initIfcViewer() {
       try {
         const container = document.getElementById('viewerContainer');
@@ -151,54 +156,34 @@
         if (!window.WebIFC?.IfcAPI) throw new Error('브라우저용 Web-IFC API를 불러오지 못했습니다.');
         ifcApi = new window.WebIFC.IfcAPI();
         // web-ifc-api-browser.js와 같은 lib 폴더에 web-ifc.wasm을 둡니다.
+        // web-ifc-api-browser.js의 위치(lib/)를 기준으로 web-ifc.wasm을 찾습니다.
         ifcApi.SetWasmPath('./', false);
         await ifcApi.Init();
         document.getElementById('viewerNote').textContent = '3D 엔진 준비 완료 · IFC 파일을 열어주세요.';
-        const startupIfc = new URLSearchParams(location.search).get('ifc');
+        const startupIfc = PAGE_PARAMS.get('ifc');
         if (startupIfc) {
           await loadIfcFromUrl(startupIfc, '자동 테스트 IFC');
-          const startupResponse = await fetch(startupIfc);
-          const startupBlob = await startupResponse.blob();
-          await analyzeIfcMaterials(new File([startupBlob], '자동 테스트 IFC.ifc', {type:'application/octet-stream'}));
+          try {
+            const startupResponse = await fetch(startupIfc);
+            if (!startupResponse.ok) throw new Error(`IFC 요청 실패 (${startupResponse.status})`);
+            const startupBlob = await startupResponse.blob();
+            await analyzeIfcMaterials(new File([startupBlob], '자동 테스트 IFC.ifc', {type:'application/octet-stream'}));
+          } catch (error) {
+            $('takeoffStatus').textContent = `재료 분석 실패: ${error.message}`;
+            console.error(error);
+          }
         }
       } catch (e) {
         document.getElementById('viewerNote').textContent = '3D 엔진을 불러오지 못했습니다. 인터넷 연결을 확인하세요.';
         console.error(e);
       }
     }
-    const sample = [{global_id:'예시',name:'파일을 선택하면 실제 벽이 표시됩니다.',level:'-',tag:'-',type:'-',is_external:'',load_bearing:'',fire_rating:'',length:'',area:'',volume:''}];
-    let all = [];
     let materialAll = [];
     let materialView = [];
     let unitPrices = JSON.parse(localStorage.getItem('bim-material-unit-prices') || '{}');
     const $ = id => document.getElementById(id);
-    $('materialApiUrl').value = MATERIAL_API_BASE;
-    function normalizeApiBase(value) { return text(value).trim().replace(/\/$/, ''); }
-    function updateApiHint(message) {
-      $('apiHint').textContent = message || (MATERIAL_API_BASE ? `연결 주소: ${MATERIAL_API_BASE}` : 'API 주소를 저장하면 IFC 재료 자동 산출을 사용할 수 있습니다.');
-    }
-    updateApiHint();
     const text = v => v === undefined || v === null ? '' : String(v);
-    function parseCsv(s) {
-      const lines = s.replace(/^\uFEFF/,'').trim().split(/\r?\n/); if (!lines.length || !lines[0]) return [];
-      const cells = line => { const out=[]; let cur='', q=false; for (let i=0;i<line.length;i++){const c=line[i]; if(c==='"'&&line[i+1]==='"'){cur+='"';i++;} else if(c==='"') q=!q; else if(c===','&&!q){out.push(cur);cur='';} else cur+=c;} out.push(cur); return out; };
-      const h=cells(lines[0]); return lines.slice(1).filter(Boolean).map(l=>{const v=cells(l), o={}; h.forEach((k,i)=>o[k]=v[i]||''); return o;});
-    }
-    function setData(rows, source) {
-      all = (rows || []).map(r => ({...r, level:r.level||r.Level||'', name:r.name||r.Name||'', tag:r.tag||r.Tag||'', global_id:r.global_id||r.GlobalId||''}));
-      $('source').textContent = source || '불러온 파일';
-      const levels=[...new Set(all.map(r=>text(r.level)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
-      $('level').innerHTML='<option value="">모든 층</option>'+levels.map(x=>`<option>${esc(x)}</option>`).join('');
-      render();
-    }
     function esc(s){return text(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-    function truth(v){return v===true || ['true','yes','y','1','예','외벽','내력벽'].includes(text(v).toLowerCase());}
-    function render(){
-      const q=$('search').value.trim().toLowerCase(), lv=$('level').value;
-      const rows=all.filter(r => (!lv||text(r.level)===lv) && (!q||Object.values(r).some(v=>text(v).toLowerCase().includes(q))));
-      $('count').textContent=rows.length; $('external').textContent=rows.filter(r=>truth(r.is_external)).length; $('bearing').textContent=rows.filter(r=>truth(r.load_bearing)).length;
-      $('rows').innerHTML=rows.length?rows.map(r=>`<tr><td>${esc(r.level)}</td><td>${esc(r.tag)}</td><td>${esc(r.name)}</td><td>${esc(r.type)}</td><td>${truth(r.is_external)?'예':''}</td><td>${truth(r.load_bearing)?'예':''}</td><td>${esc(r.fire_rating)}</td><td>${esc(r.length)}</td><td>${esc(r.area)}</td><td>${esc(r.volume)}</td><td class="muted">${esc(r.global_id)}</td></tr>`).join(''):'<tr><td colspan="11" class="empty">조건에 맞는 벽이 없습니다.</td></tr>';
-    }
     const won = value => `${Math.round(value).toLocaleString('ko-KR')}원`;
     const allocationLabel = value => ({'single':'단일 재료','layer-thickness':'재료층 두께 비율','equal-share':'균등 배분','unassigned':'미지정','set':'재료 세트'})[value] || value;
     function setMaterialData(result) {
@@ -214,7 +199,10 @@
       materialAll = [...grouped.values()].map(row => ({...row, allocations:[...row.allocations]})).sort((a,b)=>a.storey.localeCompare(b.storey,undefined,{numeric:true}) || a.material.localeCompare(b.material));
       const levels = [...new Set(materialAll.map(row=>row.storey))];
       $('materialLevel').innerHTML = '<option value="">모든 층</option>' + levels.map(level=>`<option>${esc(level)}</option>`).join('');
-      $('takeoffStatus').textContent = `${result.processed_elements.toLocaleString()}개 요소 분석 · ${materialAll.length}개 재료 행`;
+      const processed = Number(result.processed_elements) || 0;
+      const skipped = Number(result.skipped_elements) || 0;
+      const warning = Array.isArray(result.warnings) && result.warnings.length ? ` · ${result.warnings.join(' ')}` : (skipped ? ` · ${skipped.toLocaleString()}개 제외` : '');
+      $('takeoffStatus').textContent = `${processed.toLocaleString()}개 요소 분석 · ${materialAll.length}개 재료 행${warning}`;
       renderMaterials();
     }
     function renderMaterials() {
@@ -230,8 +218,19 @@
       $('materialVolume').textContent = `${volume.toLocaleString('ko-KR',{minimumFractionDigits:3,maximumFractionDigits:3})} m³`;
       $('materialCost').textContent = won(cost);
     }
+    async function fetchWithTimeout(url, options={}, timeoutMs=30000) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        return await fetch(url, {...options, signal:controller.signal});
+      } catch (error) {
+        if (error.name === 'AbortError') throw new Error('서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해 주세요.');
+        throw error;
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
     async function analyzeIfcMaterials(file) {
-      $('takeoffStatus').textContent = 'IfcOpenShell 재료·체적 분석 중...';
       if (!MATERIAL_API_BASE) {
         // GitHub Pages에는 Python/IfcOpenShell을 실행할 수 없으므로 API가 없는
         // 환경에서도 3D 뷰어가 실패 상태로 끝나지 않도록 안내 상태로 둡니다.
@@ -239,30 +238,31 @@
         materialView = [];
         renderMaterials();
         $('takeoffStatus').textContent = '3D 모델은 열렸습니다. 재료 자동 산출은 API 주소를 저장하세요.';
-        updateApiHint('공개 페이지는 정적 호스팅입니다. HTTPS 재료 산출 API 주소가 필요합니다.');
         return;
       }
+      $('takeoffStatus').textContent = '재료 분석 서버를 준비하는 중...';
       let response;
       try {
-        response = await fetch(`${MATERIAL_API_BASE}/api/material-takeoff`, {method:'POST', headers:{'Content-Type':'application/octet-stream'}, body:file});
+        const health = await fetchWithTimeout(`${MATERIAL_API_BASE}/health`, {}, API_STARTUP_TIMEOUT_MS);
+        if (!health.ok) throw new Error(`분석 서버 상태 확인 실패 (HTTP ${health.status})`);
+        $('takeoffStatus').textContent = 'IFC 업로드 및 재료·체적 분석 중...';
+        response = await fetchWithTimeout(`${MATERIAL_API_BASE}/api/material-takeoff`, {
+          method:'POST',
+          headers:{'Content-Type':'application/octet-stream'},
+          body:file
+        }, API_ANALYSIS_TIMEOUT_MS);
       } catch (error) {
         throw new Error(`API 연결 실패: ${error.message || '네트워크 오류'}`);
       }
       let result = {};
       try { result = await response.json(); } catch (_) { /* Render 오류 페이지 등 */ }
-      if (!response.ok) throw new Error(result.error || `재료 분석 API HTTP ${response.status}`);
-      setMaterialData(result);
-    }
-    async function loadScheduleFile(file) {
-      const sourceText = await file.text();
-      if (file.name.toLowerCase().endsWith('.csv')) {
-        setData(parseCsv(sourceText), file.name);
-      } else {
-        const json = JSON.parse(sourceText);
-        const walls = Array.isArray(json) ? json : json.walls;
-        if (!Array.isArray(walls)) throw new Error('JSON에 walls 배열이 없습니다.');
-        setData(walls, json.source || file.name);
+      if (!response.ok) {
+        const retry = response.headers.get('Retry-After');
+        const retryText = retry ? ` (${retry}초 후 재시도)` : '';
+        throw new Error((result.error || `재료 분석 API HTTP ${response.status}`) + retryText);
       }
+      if (!Array.isArray(result.rows)) throw new Error('API 응답 형식이 올바르지 않습니다.');
+      setMaterialData(result);
     }
     async function loadIfcFromUrl(url, label) {
       const response = await fetch(url);
@@ -270,13 +270,89 @@
       await loadIfcBytes(new Uint8Array(await response.arrayBuffer()), label);
     }
     function disposeModel() {
-      if (!modelGroup) return;
-      modelGroup.traverse(object => {
-        if (object.geometry) object.geometry.dispose();
-        if (object.material) object.material.dispose();
-      });
-      scene.remove(modelGroup);
+      if (modelGroup) {
+        modelGroup.traverse(object => {
+          if (object.geometry) object.geometry.dispose();
+          if (object.material) object.material.dispose();
+        });
+        scene.remove(modelGroup);
+      }
       modelGroup = null;
+      modelLayers = new Map();
+      renderLayers();
+    }
+    function sortedLayers() {
+      return [...modelLayers.entries()].sort(([,a],[,b]) =>
+        a.storey.localeCompare(b.storey, undefined, {numeric:true}) ||
+        a.material.localeCompare(b.material) || a.name.localeCompare(b.name));
+    }
+    function updateLayerStats() {
+      const layers = [...modelLayers.values()];
+      const visible = layers.filter(layer=>layer.visible).length;
+      $('layerCount').textContent = layers.length.toLocaleString();
+      $('visibleLayerCount').textContent = visible.toLocaleString();
+      $('hiddenLayerCount').textContent = (layers.length-visible).toLocaleString();
+    }
+    function renderLayers() {
+      updateLayerStats();
+      const query = $('layerSearch').value.trim().toLowerCase();
+      const storey = $('layerStorey').value;
+      const rows = sortedLayers().filter(([,layer]) => (!storey || layer.storey===storey) && (!query || [layer.storey,layer.name,layer.material,layer.type].some(value=>value.toLowerCase().includes(query))));
+      $('layerRows').innerHTML = rows.length ? rows.map(([key,layer])=>`<tr><td><input class="visibility-check" type="checkbox" data-layer-key="${encodeURIComponent(key)}" ${layer.visible?'checked':''} aria-label="${esc(layer.name)} 표시"></td><td>${esc(layer.storey)}</td><td>${esc(layer.name)}</td><td>${esc(layer.material)}</td><td>${esc(layer.type)}</td><td class="money">${layer.elementIds.size.toLocaleString()}</td></tr>`).join('') : '<tr><td colspan="6" class="empty">조건에 맞는 레이어가 없습니다.</td></tr>';
+    }
+    function setAllLayers(visible) {
+      for (const layer of modelLayers.values()) {
+        layer.visible = visible;
+        layer.meshes.forEach(mesh=>mesh.visible=visible);
+      }
+      renderLayers();
+    }
+    const ifcValue = value => value && typeof value==='object' && 'value' in value ? value.value : value;
+    const ifcRefs = value => (Array.isArray(value) ? value : value ? [value] : []).map(ifcValue).filter(Number.isFinite);
+    const layerName = value => text(value || '이름 미지정').replace(/:\d+$/, '').trim();
+    function typeCode(modelID, typeName) {
+      return ifcApi.GetAllTypesOfModel(modelID).find(item=>item.typeName===typeName)?.typeID;
+    }
+    function relationLines(modelID, typeName) {
+      const code = typeCode(modelID, typeName);
+      if (code===undefined) return [];
+      const ids = ifcApi.GetLineIDsWithType(modelID, code, true);
+      const lines=[];
+      for(let index=0; index<ids.size(); index++) lines.push(ifcApi.GetLine(modelID, ids.get(index), false));
+      return lines;
+    }
+    function buildStoreyMap(modelID) {
+      const result = new Map();
+      for (const relation of relationLines(modelID,'IFCRELCONTAINEDINSPATIALSTRUCTURE')) {
+        const containerId = ifcValue(relation.RelatingStructure);
+        const container = ifcApi.GetLine(modelID, containerId, false);
+        const storey = text(ifcValue(container?.Name) || ifcValue(container?.LongName) || '층 미지정');
+        for (const elementId of ifcRefs(relation.RelatedElements)) result.set(elementId, storey);
+      }
+      return result;
+    }
+    function materialNames(modelID, materialId, visited=new Set()) {
+      if (!Number.isFinite(materialId) || visited.has(materialId)) return [];
+      visited.add(materialId);
+      const line = ifcApi.GetLine(modelID, materialId, false);
+      if (!line) return [];
+      const type = text(ifcApi.GetNameFromTypeCode(line.type));
+      if (type==='IFCMATERIAL') return [text(ifcValue(line.Name) || '재료 미지정')];
+      const result=[];
+      for (const key of ['Material','ForLayerSet','ForProfileSet','MaterialLayers','Materials','MaterialProfiles','MaterialConstituents']) {
+        for (const ref of ifcRefs(line[key])) result.push(...materialNames(modelID,ref,visited));
+      }
+      if (!result.length && type.includes('MATERIAL') && ifcValue(line.Name)) result.push(text(ifcValue(line.Name)));
+      return [...new Set(result.filter(Boolean))];
+    }
+    function buildMaterialMap(modelID) {
+      const result = new Map();
+      for (const relation of relationLines(modelID,'IFCRELASSOCIATESMATERIAL')) {
+        const names = materialNames(modelID, ifcValue(relation.RelatingMaterial));
+        const label = names.length ? names.join(', ') : '재료 미지정';
+        for (const elementId of ifcRefs(relation.RelatedObjects)) result.set(elementId,label);
+      }
+      return result;
     }
     function fitModel(group) {
       const box = new THREE.Box3().setFromObject(group);
@@ -296,10 +372,21 @@
       $('viewerNote').textContent = `${label} · IFC 모델을 해석하는 중...`;
       const modelID = ifcApi.OpenModel(bytes, { COORDINATE_TO_ORIGIN: true, USE_FAST_BOOLS: true });
       const nextGroup = new THREE.Group();
+      const nextLayers = new Map();
+      const elementMeshes = new Map();
+      const elementInfo = new Map();
       const materials = new Map();
       let meshCount = 0;
       try {
         ifcApi.StreamAllMeshes(modelID, flatMesh => {
+          let typeName = 'IFC 요소';
+          let elementName = '이름 미지정';
+          try {
+            const line = ifcApi.GetLine(modelID, flatMesh.expressID, false);
+            typeName = ifcApi.GetNameFromTypeCode(line.type) || typeName;
+            elementName = layerName(ifcValue(line.Name) || ifcValue(line.ObjectType) || typeName);
+          } catch (_) { /* 속성을 읽을 수 없는 요소는 기본 이름을 사용합니다. */ }
+          elementInfo.set(flatMesh.expressID,{type:typeName,name:elementName});
           const placedGeometries = flatMesh.geometries;
           for (let index = 0; index < placedGeometries.size(); index++) {
             const placed = placedGeometries.get(index);
@@ -328,18 +415,39 @@
             mesh.userData.expressID = flatMesh.expressID;
             mesh.applyMatrix4(new THREE.Matrix4().fromArray(Array.from(placed.flatTransformation)));
             nextGroup.add(mesh);
+            if (!elementMeshes.has(flatMesh.expressID)) elementMeshes.set(flatMesh.expressID, []);
+            elementMeshes.get(flatMesh.expressID).push(mesh);
             meshCount++;
             sourceGeometry.delete();
           }
         });
+        $('viewerNote').textContent = `${label} · 층·이름·재료 레이어를 분류하는 중...`;
+        const storeys = buildStoreyMap(modelID);
+        const elementMaterials = buildMaterialMap(modelID);
+        for (const [elementId, meshes] of elementMeshes) {
+          const info = elementInfo.get(elementId) || {type:'IFC 요소',name:'이름 미지정'};
+          const storey = storeys.get(elementId) || '층 미지정';
+          const materialName = elementMaterials.get(elementId) || '재료 미지정';
+          const key = `${storey}\u0000${info.name}\u0000${materialName}\u0000${info.type}`;
+          if (!nextLayers.has(key)) nextLayers.set(key,{storey,name:info.name,material:materialName,type:info.type,meshes:[],elementIds:new Set(),visible:true});
+          const layer = nextLayers.get(key);
+          layer.meshes.push(...meshes);
+          layer.elementIds.add(elementId);
+          meshes.forEach(mesh=>mesh.userData.layerKey=key);
+        }
       } finally {
         ifcApi.CloseModel(modelID);
       }
       if (!meshCount) throw new Error('IFC에서 표시 가능한 형상을 찾지 못했습니다.');
       disposeModel();
       modelGroup = nextGroup;
+      modelLayers = nextLayers;
       scene.add(modelGroup);
       fitModel(modelGroup);
+      const storeyNames=[...new Set([...modelLayers.values()].map(layer=>layer.storey))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+      $('layerStorey').innerHTML='<option value="">모든 층</option>'+storeyNames.map(name=>`<option>${esc(name)}</option>`).join('');
+      $('source').textContent=label;
+      renderLayers();
       $('viewerNote').textContent = `${label} · 3D 메시 ${meshCount.toLocaleString()}개`;
     }
     async function loadIfcFile(file) {
@@ -353,8 +461,10 @@
         await analyzeIfcMaterials(file);
       } catch (error) {
         $('takeoffStatus').textContent = `재료 분석 실패: ${error.message}`;
-        throw error;
+        console.error(error);
+        return {materialError:error};
       }
+      return {materialError:null};
     }
     function setDropState(message, state='') {
       drop.classList.remove('over','error','success');
@@ -364,18 +474,19 @@
     async function handleFiles(fileList) {
       const files = [...fileList];
       if (!files.length) return;
-      const supported = files.filter(file => /\.(ifc|json|csv)$/i.test(file.name));
-      const rejected = files.filter(file => !/\.(ifc|json|csv)$/i.test(file.name));
+      const supported = files.filter(file => /\.ifc$/i.test(file.name));
+      const rejected = files.filter(file => !/\.ifc$/i.test(file.name));
       if (!supported.length) {
-        setDropState('지원하지 않는 파일입니다. IFC·JSON·CSV만 사용할 수 있습니다.', 'error');
+        setDropState('지원하지 않는 파일입니다. IFC 파일을 선택하세요.', 'error');
         return;
       }
       setDropState(`${supported.length}개 파일을 처리하는 중...`);
       const failures = [];
+      const materialWarnings = [];
       for (const file of supported) {
         try {
-          if (/\.ifc$/i.test(file.name)) await loadIfcFile(file);
-          else await loadScheduleFile(file);
+          const result = await loadIfcFile(file);
+          if (result.materialError) materialWarnings.push(`${file.name}: ${result.materialError.message}`);
         } catch (error) {
           failures.push(`${file.name}: ${error.message}`);
           console.error(error);
@@ -385,23 +496,18 @@
         const ignored = rejected.length ? ` 제외: ${rejected.map(f=>f.name).join(', ')}` : '';
         const failed = failures.length ? ` 실패: ${failures.join(' / ')}` : '';
         setDropState(`일부 파일을 처리하지 못했습니다.${ignored}${failed}`, 'error');
+      } else if (materialWarnings.length) {
+        setDropState(`3D 모델 로드 완료 · 재료 분석은 처리하지 못했습니다.`, 'success');
       } else {
         setDropState(`${supported.map(f=>f.name).join(' + ')} 로드 완료`, 'success');
       }
     }
-    $('fileInput').addEventListener('change', e => handleFiles(e.target.files));
     $('ifcInput').addEventListener('change', e => handleFiles(e.target.files));
     $('dropInput').addEventListener('change', e => handleFiles(e.target.files));
-    $('search').addEventListener('input',render); $('level').addEventListener('change',render); $('clear').addEventListener('click',()=>{$('search').value='';$('level').value='';render();});
+    $('layerSearch').addEventListener('input',renderLayers);
+    $('layerStorey').addEventListener('change',renderLayers);
     $('materialLevel').addEventListener('change', renderMaterials);
     $('materialSearch').addEventListener('input', renderMaterials);
-    $('saveApiUrl').addEventListener('click', () => {
-      MATERIAL_API_BASE = normalizeApiBase($('materialApiUrl').value);
-      if (MATERIAL_API_BASE) localStorage.setItem('bim-material-api-base', MATERIAL_API_BASE);
-      else localStorage.removeItem('bim-material-api-base');
-      updateApiHint(MATERIAL_API_BASE ? `연결 주소가 저장되었습니다: ${MATERIAL_API_BASE}` : 'API 주소를 비웠습니다.');
-      $('takeoffStatus').textContent = MATERIAL_API_BASE ? 'API 주소 저장 완료 · IFC를 다시 열어 분석하세요.' : '3D 모델은 사용할 수 있지만 재료 자동 산출 API가 없습니다.';
-    });
     $('materialRows').addEventListener('change', event => {
       if (!event.target.classList.contains('price-input')) return;
       const material = decodeURIComponent(event.target.dataset.material);
@@ -409,16 +515,45 @@
       localStorage.setItem('bim-material-unit-prices', JSON.stringify(unitPrices));
       renderMaterials();
     });
-    $('applyConcrete').addEventListener('click', () => {
-      const price = Math.max(0, Number($('concretePrice').value) || 0);
-      if (!price) { alert('적용할 콘크리트 단가를 입력하세요.'); return; }
+    $('applyBulkPrice').addEventListener('click', () => {
+      const price = Math.max(0, Number($('bulkPrice').value) || 0);
+      if (!price) { alert('적용할 재료 단가를 입력하세요.'); return; }
+      const category = $('bulkMaterial').value;
+      const patterns = {
+        concrete:/concrete|콘크리트|cement|시멘트/i,
+        glass:/glass|glazing|유리|창호|window/i,
+        metal:/metal|steel|aluminium|aluminum|금속|철|강재|알루미늄/i,
+        wood:/wood|timber|목재|나무/i,
+        brick:/brick|masonry|벽돌|조적/i,
+        all:/.*/
+      };
       let applied = 0;
       for (const row of materialAll) {
-        if (/concrete|콘크리트/i.test(row.material)) { unitPrices[row.material] = price; applied++; }
+        if (patterns[category].test(row.material)) { unitPrices[row.material] = price; applied++; }
       }
       localStorage.setItem('bim-material-unit-prices', JSON.stringify(unitPrices));
       renderMaterials();
-      $('takeoffStatus').textContent = `콘크리트 계열 재료 ${applied}개에 단가 적용`;
+      $('takeoffStatus').textContent = applied ? `선택 재료군 ${applied}개에 단가 적용` : '일치하는 재료가 없습니다.';
+    });
+    $('showAllLayers').addEventListener('click', () => setAllLayers(true));
+    $('hideAllLayers').addEventListener('click', () => setAllLayers(false));
+    $('layerRows').addEventListener('change', event => {
+      if (!event.target.classList.contains('visibility-check')) return;
+      const layer = modelLayers.get(decodeURIComponent(event.target.dataset.layerKey));
+      if (!layer) return;
+      layer.visible = event.target.checked;
+      layer.meshes.forEach(mesh=>mesh.visible=layer.visible);
+      updateLayerStats();
+    });
+    document.querySelectorAll('[data-future-format]').forEach(button => button.addEventListener('click', () => alert(`${button.dataset.futureFormat} 파일 열기 기능은 준비 중입니다.`)));
+    $('resetAll').addEventListener('click', () => {
+      disposeModel(); materialAll=[]; materialView=[];
+      $('layerSearch').value=''; $('layerStorey').innerHTML='<option value="">모든 층</option>';
+      $('source').textContent='파일을 선택하세요'; renderLayers();
+      $('materialLevel').innerHTML='<option value="">모든 층</option>'; $('materialSearch').value=''; renderMaterials();
+      $('takeoffStatus').textContent='IFC 분석 대기'; $('viewerNote').textContent='IFC 파일을 열면 3D 모델이 표시됩니다.';
+      $('ifcInput').value=''; $('dropInput').value='';
+      setDropState('IFC 파일을 여기에 끌어놓기');
     });
     $('exportMaterials').addEventListener('click', () => {
       if (!materialView.length) { alert('저장할 재료 산출 결과가 없습니다.'); return; }

@@ -74,7 +74,7 @@ def _material_parts(element):
     return [(getattr(material, "Name", None) or material.is_a(), 1.0, "set")]
 
 
-def analyze_ifc(ifc_path, allow_geometry=True):
+def analyze_ifc(ifc_path, allow_geometry=True, max_geometry_elements=None):
     model = ifcopenshell.open(ifc_path)
     try:
         volume_scale = ifcopenshell.util.unit.calculate_unit_scale(model, "VOLUMEUNIT")
@@ -84,6 +84,8 @@ def analyze_ifc(ifc_path, allow_geometry=True):
     grouped = defaultdict(lambda: {"volume_m3": 0.0, "element_ids": set(), "quantity_elements": 0, "geometry_elements": 0})
     processed = 0
     skipped = 0
+    geometry_attempts = 0
+    geometry_limit_reached = False
     # 공개 Render 인스턴스의 메모리를 보호하기 위해 재료 산출 대상인 벽만
     # 순회합니다. 전체 IfcElement의 형상 생성은 대형 IFC에서 프로세스를
     # 종료시킬 수 있고, 이 화면의 산출 목적과도 맞지 않습니다.
@@ -95,10 +97,14 @@ def analyze_ifc(ifc_path, allow_geometry=True):
         method = "quantity"
         # 공개 Render 인스턴스에서는 형상 재생성이 CPU/메모리를 크게 사용하고
         # 일부 IFC 형상에서 IfcOpenShell 네이티브 예외를 일으킬 수 있다.
-        # 기본값은 IFC에 저장된 QTO만 사용하며, 로컬에서 필요할 때만 켠다.
+        # API에서는 동시 실행과 처리 개수를 제한해 형상 계산을 안전하게 보완한다.
         if volume is None and allow_geometry:
-            volume = _geometry_volume(element, settings)
-            method = "geometry"
+            if max_geometry_elements is None or geometry_attempts < max_geometry_elements:
+                geometry_attempts += 1
+                volume = _geometry_volume(element, settings)
+                method = "geometry"
+            else:
+                geometry_limit_reached = True
         if volume is None:
             skipped += 1
             continue
@@ -121,7 +127,20 @@ def analyze_ifc(ifc_path, allow_geometry=True):
             "geometry_elements": data["geometry_elements"],
         })
     rows.sort(key=lambda row: (row["storey"], row["material"]))
-    return {"source": os.path.basename(ifc_path), "processed_elements": processed, "skipped_elements": skipped, "rows": rows}
+    warnings = []
+    if geometry_limit_reached:
+        warnings.append(f"형상 체적 계산 한도({max_geometry_elements}개)를 초과한 일부 벽은 제외되었습니다.")
+    if skipped:
+        warnings.append(f"체적을 계산할 수 없는 벽 {skipped}개가 제외되었습니다.")
+    return {
+        "source": os.path.basename(ifc_path),
+        "target_elements": len(elements),
+        "processed_elements": processed,
+        "skipped_elements": skipped,
+        "analysis_mode": "qto+geometry" if allow_geometry else "qto-only",
+        "warnings": warnings,
+        "rows": rows,
+    }
 
 
 if __name__ == "__main__":
