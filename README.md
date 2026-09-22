@@ -22,3 +22,7 @@ GitHub Pages는 정적 호스팅이므로 IfcOpenShell을 실행할 수 없습�
 - API는 `POST /api/material-takeoff` 경로에서 IFC 바이너리를 받고 JSON 결과를 반환해야 합니다.
 - `bim_local_server.py`는 로컬 검증용 API이며 CORS 헤더가 포함되어 있습니다. 공개 배포 시에는 이 서버를 HTTPS가 되는 Python 호스팅에 배포하세요.
 - API 주소가 비어 있어도 3D IFC 뷰어는 정상 동작하며, 재료 패널은 실패 대신 API 설정 안내를 표시합니다.
+
+### Render 배포
+
+저장소의 `render.yaml`을 사용하면 Render에서 `bim-material-api` Web Service를 만들 수 있습니다. Render 대시보드에서 **New > Blueprint**를 선택하고 이 GitHub 저장소를 연결하면 됩니다. 배포가 끝나면 `https://<서비스명>.onrender.com`을 뷰어의 API 주소 입력란에 저장합니다. `/health`가 `{"status":"ok"}`를 반환하면 연결이 준비된 것입니다.
