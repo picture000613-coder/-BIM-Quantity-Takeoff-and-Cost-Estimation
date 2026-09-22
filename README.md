@@ -21,7 +21,7 @@ GitHub Pages는 정적 호스팅이므로 IfcOpenShell을 실행할 수 없습�
 - 페이지의 **재료 산출 API 주소** 입력란에 API 기본 주소를 입력하고 **API 주소 저장**을 누릅니다.
 - API는 `POST /api/material-takeoff` 경로에서 IFC 바이너리를 받고 JSON 결과를 반환해야 합니다.
 - `bim_local_server.py`는 로컬 검증용 API이며 CORS 헤더가 포함되어 있습니다. 공개 배포 시에는 이 서버를 HTTPS가 되는 Python 호스팅에 배포하세요.
-- API 주소가 비어 있어도 3D IFC 뷰어는 정상 동작하며, 재료 패널은 실패 대신 API 설정 안내를 표시합니다.
+- 공개 뷰어에는 기본 API 주소 `https://bim-material-api.onrender.com`이 연결되어 있습니다. 무료 Render 서비스가 잠든 경우 첫 요청에 시간이 걸릴 수 있습니다. 다른 API를 사용하려면 페이지의 주소 입력란에서 변경할 수 있습니다.
 
 ### Render 배포
 

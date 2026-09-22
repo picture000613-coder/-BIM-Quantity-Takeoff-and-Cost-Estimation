@@ -114,7 +114,8 @@
   <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-    let MATERIAL_API_BASE = window.BIM_API_BASE || localStorage.getItem('bim-material-api-base') || '';
+    const DEFAULT_MATERIAL_API_BASE = 'https://bim-material-api.onrender.com';
+    let MATERIAL_API_BASE = window.BIM_API_BASE || localStorage.getItem('bim-material-api-base') || DEFAULT_MATERIAL_API_BASE;
 
     let ifcApi = null;
     let scene, camera, renderer, controls, modelGroup;
