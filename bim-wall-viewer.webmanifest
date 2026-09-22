@@ -1,0 +1,9 @@
+{
+  "name": "BIM 벽 일람표 뷰어",
+  "short_name": "벽 일람표",
+  "start_url": "bim_wall_viewer.html",
+  "display": "standalone",
+  "background_color": "#f3f6f9",
+  "theme_color": "#14324d",
+  "description": "IFC에서 추출한 벽 일람표를 PC와 휴대폰에서 확인하는 뷰어"
+}
