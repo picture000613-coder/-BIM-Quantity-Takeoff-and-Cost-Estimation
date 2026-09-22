@@ -11,6 +11,7 @@ import ifcopenshell.util.unit
 
 
 SKIP_CLASSES = {"IfcOpeningElement", "IfcVoidingFeature", "IfcProjectionElement"}
+TARGET_CLASSES = ("IfcWall", "IfcWallStandardCase")
 
 
 def _storey_name(element):
@@ -83,7 +84,11 @@ def analyze_ifc(ifc_path):
     grouped = defaultdict(lambda: {"volume_m3": 0.0, "element_ids": set(), "quantity_elements": 0, "geometry_elements": 0})
     processed = 0
     skipped = 0
-    for element in model.by_type("IfcElement"):
+    # 공개 Render 인스턴스의 메모리를 보호하기 위해 재료 산출 대상인 벽만
+    # 순회합니다. 전체 IfcElement의 형상 생성은 대형 IFC에서 프로세스를
+    # 종료시킬 수 있고, 이 화면의 산출 목적과도 맞지 않습니다.
+    elements = model.by_type("IfcWall")
+    for element in elements:
         if element.is_a() in SKIP_CLASSES or element.is_a("IfcFeatureElement"):
             continue
         volume = _quantity_volume(element, volume_scale)
