@@ -29,6 +29,8 @@
     .top-toolbar { width:100%; box-sizing:border-box; flex-wrap:nowrap; }
     .top-toolbar .drop { min-width:260px; }
     .top-toolbar #resetAll { margin-left:auto; flex:0 0 auto; }
+    .top-toolbar button,.top-toolbar .file-label,.top-toolbar .drop { height:42px; min-height:42px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .top-toolbar .drop { flex:1 1 280px; flex-direction:column; padding:4px 12px; overflow:hidden; }
     button,.file-label { border:0; border-radius:8px; padding:10px 14px; background:var(--blue); color:#fff; font:inherit; cursor:pointer; }
     button.secondary { background:#e8eef5; color:#18344e; }
     button.future { background:#4c7598; }
@@ -45,14 +47,23 @@
     .stat b { display:block; font-size:18px; color:var(--navy); }
     .stat span { color:#617284; font-size:12px; }
     .dashboard { display:flex; flex-direction:column; gap:12px; }
-    .workspace { display:grid; grid-template-columns:minmax(320px,1fr) minmax(420px,1.05fr); gap:12px; align-items:stretch; }
-    .viewer { min-height:560px; background:#101820; border:1px solid #20384e; border-radius:12px; overflow:hidden; position:relative; }
-    #viewerContainer { width:100%; height:560px; }
+    .workspace { --workspace-height:560px; display:grid; grid-template-columns:minmax(320px,1fr) minmax(420px,1.05fr); gap:12px; align-items:stretch; }
+    .viewer { height:var(--workspace-height); min-height:0; background:#101820; border:1px solid #20384e; border-radius:12px; overflow:hidden; position:relative; }
+    #viewerContainer { width:100%; height:100%; }
     .viewer-note { position:absolute; left:12px; bottom:10px; color:#d5e4f2; background:#13283acc; padding:7px 10px; border-radius:7px; font-size:12px; }
     .table-wrap { background:#fff; border:1px solid var(--line); border-radius:12px; overflow:auto; box-shadow:0 2px 9px #1c38520b; }
-    .schedule-panel { display:flex; min-width:0; flex-direction:column; gap:10px; }
-    .schedule-panel .stats { min-height:56px; }
-    .schedule-panel .table-wrap { flex:1; max-height:494px; }
+    .schedule-panel { display:flex; min-width:0; min-height:0; height:var(--workspace-height); flex-direction:column; gap:10px; overflow:hidden; }
+    .schedule-panel .stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) 110px 98px 98px; gap:8px; flex:0 0 60px; height:60px; min-height:60px; padding:0; overflow:hidden; }
+    .schedule-panel .stats .stat { display:flex; min-width:0; height:60px; padding:7px 10px; flex-direction:column; justify-content:center; align-items:flex-start; overflow:hidden; }
+    .schedule-panel .stats .stat b { width:100%; font-size:16px; line-height:1.15; text-align:left; }
+    .schedule-panel .stats .stat span { display:block; width:100%; margin-top:3px; font-size:11px; line-height:1.15; text-align:left; white-space:nowrap; }
+    .schedule-panel .stats .stat:last-child { grid-column:4/-1; min-width:0; margin-right:0; }
+    #source { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .schedule-panel > .toolbar { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) 100px 98px 98px; gap:8px; align-items:center; flex:0 0 64px; height:64px; min-height:64px; margin-bottom:0; overflow:hidden; }
+    .schedule-panel > .toolbar input[type=search] { grid-column:1/4; width:100%; min-width:0; }
+    .schedule-panel > .toolbar select { width:100%; min-width:0; }
+    .schedule-panel > .toolbar input[type=search],.schedule-panel > .toolbar select,.schedule-panel > .toolbar button { height:42px; }
+    .schedule-panel .table-wrap { flex:1 1 0; min-height:0; max-height:none; overflow:auto; }
     .cost-panel { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; }
     .cost-panel h2 { margin:0 0 5px; color:var(--navy); }
     .cost-panel p { margin:0 0 12px; color:#607284; font-size:13px; }
@@ -68,9 +79,19 @@
     th,td { padding:10px 11px; border-bottom:1px solid #edf0f3; text-align:left; font-size:13px; white-space:nowrap; }
     th { position:sticky; top:0; background:#edf3f8; color:#30485e; z-index:1; }
     tbody tr:hover { background:#f1f8ff; }
+    .takeoff-table { min-width:980px; table-layout:fixed; }
+    .takeoff-table th,.takeoff-table td { border-right:1px solid #dce4ec; border-bottom:1px solid #dce4ec; vertical-align:middle; }
+    .takeoff-table th:last-child,.takeoff-table td:last-child { border-right:0; }
+    .takeoff-table thead th { text-align:center; }
+    .takeoff-table tbody tr.material-start td { border-top:2px solid #bccbd7; }
+    .takeoff-table .shared-material { color:var(--navy); font-weight:700; }
+    .takeoff-table .quantity-unit { font-variant-numeric:tabular-nums; text-align:right; }
+    .takeoff-table .price-input { width:100%; max-width:130px; }
+    .takeoff-loading { color:var(--blue); font-weight:700; }
     .empty { padding:48px 20px; text-align:center; color:#627486; }
     .muted { color:#6d7d8c; font-size:12px; }
-    @media (max-width:900px) { .top-toolbar { flex-wrap:wrap; } .top-toolbar .drop { order:2; flex-basis:100%; } .workspace { grid-template-columns:1fr; } #viewerContainer { height:430px; } .viewer { min-height:430px; } .schedule-panel .table-wrap { max-height:430px; } }
+    @media (max-width:900px) { .top-toolbar { flex-wrap:wrap; } .top-toolbar .drop { order:2; flex-basis:100%; } .workspace { --workspace-height:430px; grid-template-columns:1fr; } }
+    @media (max-width:520px) { .schedule-panel .stats { grid-template-columns:repeat(3,1fr); height:auto; overflow:visible; } .schedule-panel .stats .stat:last-child { grid-column:1/-1; } }
     @media (max-width:640px) { header { padding:17px 14px; } main { padding:12px 8px 26px; } .toolbar { padding:9px; } .stat { flex:1 1 110px; min-width:0; } }
   </style>
 </head>
@@ -80,33 +101,35 @@
     <section class="toolbar top-toolbar">
       <label class="file-label" for="ifcInput">IFC 3D 열기</label>
       <input id="ifcInput" type="file" accept=".ifc,.IFC">
-      <button class="future" data-future-format="SketchUp">SketchUp</button>
+      <button id="skpOpen">SketchUp 열기</button>
+      <input id="skpInput" type="file" accept=".skp,.SKP">
       <button class="future" data-future-format="Rhino">Rhino 3DM</button>
-      <input id="dropInput" type="file" accept=".ifc,.IFC">
-      <div id="drop" class="drop" role="button" tabindex="0"><strong>IFC 파일을 여기에 끌어놓기</strong><small>모델을 열면 층·이름·재료별 레이어가 자동 생성됩니다.</small></div>
+      <input id="dropInput" type="file" accept=".ifc,.IFC,.skp,.SKP">
+      <div id="drop" class="drop" role="button" tabindex="0"><strong>IFC 또는 SKP 파일을 여기에 끌어놓기</strong><small>모델을 열면 층·재료 또는 Tag별 레이어가 자동 생성됩니다.</small></div>
       <button id="resetAll" class="secondary">초기화</button>
     </section>
     <div class="dashboard">
-    <section class="workspace"><div class="viewer"><div id="viewerContainer"></div><div id="viewerNote" class="viewer-note">IFC 파일을 열면 3D 모델이 표시됩니다.</div></div><div class="schedule-panel"><section class="stats"><div class="stat"><b id="layerCount">0</b><span>레이어 수</span></div><div class="stat"><b id="visibleLayerCount">0</b><span>표시 레이어</span></div><div class="stat"><b id="hiddenLayerCount">0</b><span>숨김 레이어</span></div><div class="stat"><b id="source" class="muted">파일을 선택하세요</b><span>원본</span></div></section><div class="toolbar"><input id="layerSearch" type="search" placeholder="층, 이름, 재료, IFC 형식 검색"><select id="layerStorey"><option value="">모든 층</option></select><button id="showAllLayers" class="secondary">전체 표시</button><button id="hideAllLayers" class="secondary">전체 숨김</button></div><div class="table-wrap"><table class="layer-table"><thead><tr>
-      <th>표시</th><th>층</th><th>이름</th><th>재료</th><th>IFC 형식</th><th>객체 수</th>
-    </tr></thead><tbody id="layerRows"><tr><td colspan="6" class="empty">IFC 파일을 열면 표시 레이어가 생성됩니다.</td></tr></tbody></table></div></div></section>
+    <section class="workspace"><div class="viewer"><div id="viewerContainer"></div><div id="viewerNote" class="viewer-note">IFC 또는 SKP 파일을 열면 3D 모델이 표시됩니다.</div></div><div class="schedule-panel"><section class="stats"><div class="stat"><b id="layerCount">0</b><span>레이어 수</span></div><div class="stat"><b id="visibleLayerCount">0</b><span>표시 레이어</span></div><div class="stat"><b id="hiddenLayerCount">0</b><span>숨김 레이어</span></div><div class="stat"><b id="source" class="muted">파일을 선택하세요</b><span>원본</span></div></section><div class="toolbar"><input id="layerSearch" type="search" placeholder="층, 이름, 재료, 형식 검색"><select id="layerStorey"><option value="">모든 층</option></select><button id="showAllLayers" class="secondary">전체 표시</button><button id="hideAllLayers" class="secondary">전체 숨김</button></div><div class="table-wrap"><table class="layer-table"><thead><tr>
+      <th>표시</th><th>분류</th><th>이름</th><th>재료/Tag</th><th>형식</th><th>객체 수</th><th>폐합 상태</th><th>닫힌 체적(m³)</th><th>열린 면적(m²)</th>
+    </tr></thead><tbody id="layerRows"><tr><td colspan="9" class="empty">IFC 또는 SKP 파일을 열면 표시 레이어가 생성됩니다.</td></tr></tbody></table></div></div></section>
     <section class="cost-panel">
-      <h2>층별 재료 체적 및 재료비</h2>
-      <p>IFC를 열면 IfcOpenShell이 재료층과 형상을 분석합니다. 단가는 원/m³ 기준이며 브라우저에 자동 저장됩니다.</p>
+      <h2>체적 및 예상 비용</h2>
+      <p>IFC는 재료 체적을, SketchUp은 Tag별 닫힌 형상 체적과 열린 형상 면적을 집계합니다. 단가는 각 행의 m³ 또는 m² 기준이며 브라우저에 자동 저장됩니다.</p>
       <div class="material-toolbar">
         <select id="materialLevel"><option value="">모든 층</option></select>
-        <input id="materialSearch" type="search" placeholder="재료 이름 검색">
+        <input id="materialSearch" type="search" placeholder="재료 또는 Tag 이름 검색">
         <select id="bulkMaterial"><option value="concrete">콘크리트</option><option value="glass">유리·창호</option><option value="metal">금속·철·알루미늄</option><option value="wood">목재</option><option value="brick">벽돌·조적</option><option value="all">모든 재료</option></select>
-        <input id="bulkPrice" type="number" min="0" step="1000" placeholder="일괄 단가 원/m³">
+        <input id="bulkPrice" type="number" min="0" step="1000" placeholder="일괄 단가 원/단위">
         <button id="applyBulkPrice">선택 재료군 단가 적용</button>
         <button id="exportMaterials" class="secondary">견적 CSV 저장</button>
       </div>
       <div class="cost-summary">
         <div class="stat"><b id="materialVolume">0.000 m³</b><span>선택 재료 체적</span></div>
+        <div class="stat"><b id="materialArea">0.000 m²</b><span>선택 열린 형상 면적</span></div>
         <div class="stat"><b id="materialCost">0원</b><span>예상 재료비</span></div>
-        <div class="stat"><b id="takeoffStatus" class="muted">IFC 분석 대기</b><span>산출 상태</span></div>
+        <div class="stat"><b id="takeoffStatus" class="muted">모델 분석 대기</b><span>산출 상태</span></div>
       </div>
-      <div class="table-wrap"><table><thead><tr><th>층</th><th>재료</th><th>요소 수</th><th>체적 배분</th><th>체적(m³)</th><th>단가(원/m³)</th><th>재료비(원)</th></tr></thead><tbody id="materialRows"><tr><td colspan="7" class="empty">IFC 파일을 열면 재료 체적을 계산합니다.</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="takeoff-table"><colgroup><col style="width:20%"><col style="width:12%"><col style="width:22%"><col style="width:16%"><col style="width:15%"><col style="width:15%"></colgroup><thead><tr><th>재료/Tag</th><th>요소 수</th><th>산출 방식</th><th>수량·단위</th><th>단가(원/단위)</th><th>예상 비용(원)</th></tr></thead><tbody id="materialRows"><tr><td colspan="6" class="empty">IFC 또는 SKP 파일을 열면 체적과 면적을 계산합니다.</td></tr></tbody></table></div>
     </section>
     </div>
   </main>
@@ -120,8 +143,10 @@
     // 예전 화면에서 저장한 localStorage 주소는 더 이상 사용하지 않습니다.
     // 숨겨진 잘못된 주소 때문에 사용자가 API를 복구할 수 없는 상태를 막습니다.
     const MATERIAL_API_BASE = PAGE_PARAMS.has('no-material-api') ? '' : (window.BIM_API_BASE || DEFAULT_MATERIAL_API_BASE);
+    const OPENSKP_MODULE_URL = 'https://esm.sh/openskp@1.3.0?bundle';
 
     let ifcApi = null;
+    let openSkpModulePromise = null;
     let scene, camera, renderer, controls, modelGroup;
     let modelLayers = new Map();
     async function initIfcViewer() {
@@ -159,7 +184,7 @@
         // web-ifc-api-browser.js의 위치(lib/)를 기준으로 web-ifc.wasm을 찾습니다.
         ifcApi.SetWasmPath('./', false);
         await ifcApi.Init();
-        document.getElementById('viewerNote').textContent = '3D 엔진 준비 완료 · IFC 파일을 열어주세요.';
+        document.getElementById('viewerNote').textContent = '3D 엔진 준비 완료 · IFC 또는 SKP 파일을 열어주세요.';
         const startupIfc = PAGE_PARAMS.get('ifc');
         if (startupIfc) {
           await loadIfcFromUrl(startupIfc, '자동 테스트 IFC');
@@ -170,6 +195,19 @@
             await analyzeIfcMaterials(new File([startupBlob], '자동 테스트 IFC.ifc', {type:'application/octet-stream'}));
           } catch (error) {
             $('takeoffStatus').textContent = `재료 분석 실패: ${error.message}`;
+            console.error(error);
+          }
+        }
+        const startupSkp = PAGE_PARAMS.get('skp');
+        if (startupSkp) {
+          try {
+            const startupResponse = await fetch(startupSkp);
+            if (!startupResponse.ok) throw new Error(`SKP 요청 실패 (${startupResponse.status})`);
+            const startupBlob = await startupResponse.blob();
+            const startupName = startupSkp.split('/').pop() || '자동 테스트 SKP.skp';
+            await loadSkpFile(new File([startupBlob], startupName, {type:'application/octet-stream'}));
+          } catch (error) {
+            $('viewerNote').textContent = `SKP 자동 열기 실패: ${error.message}`;
             console.error(error);
           }
         }
@@ -184,19 +222,39 @@
     const $ = id => document.getElementById(id);
     const text = v => v === undefined || v === null ? '' : String(v);
     function esc(s){return text(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    function compactFileName(value, maxLength=18) {
+      const name = text(value);
+      if (name.length <= maxLength) return name;
+      const dot = name.lastIndexOf('.');
+      const extension = dot > 0 ? name.slice(dot) : '';
+      const base = extension ? name.slice(0,dot) : name;
+      const tailLength = Math.min(6, Math.max(3, base.length - 8));
+      const headLength = Math.max(6, maxLength - extension.length - tailLength - 1);
+      return `${base.slice(0,headLength)}…${base.slice(-tailLength)}${extension}`;
+    }
+    function setSourceName(value) {
+      const source = $('source');
+      source.textContent = compactFileName(value);
+      source.title = text(value);
+    }
     const won = value => `${Math.round(value).toLocaleString('ko-KR')}원`;
-    const allocationLabel = value => ({'single':'단일 재료','layer-thickness':'재료층 두께 비율','equal-share':'균등 배분','unassigned':'미지정','set':'재료 세트'})[value] || value;
+    const allocationLabel = value => ({'single':'단일 재료','layer-thickness':'재료층 두께 비율','equal-share':'균등 배분','unassigned':'미지정','set':'재료 세트','closed-solid':'닫힌 형상 체적','open-surface':'열린 형상 면적'})[value] || value;
+    const priceKey = row => `${row.material}\u0000${row.unit}`;
+    const rowPrice = row => Number(unitPrices[priceKey(row)] ?? unitPrices[row.material]) || 0;
     function setMaterialData(result) {
       const grouped = new Map();
       for (const row of result.rows || []) {
-        const key = `${row.storey}\u0000${row.material}`;
-        if (!grouped.has(key)) grouped.set(key, {storey:row.storey, material:row.material, volume_m3:0, element_count:0, allocations:new Set()});
+        const unit = row.unit || 'm³';
+        const quantity = Number(row.quantity ?? row.volume_m3) || 0;
+        const key = `${row.storey}\u0000${row.material}\u0000${unit}`;
+        if (!grouped.has(key)) grouped.set(key, {storey:row.storey, material:row.material, unit, quantity:0, element_count:0, allocations:new Set()});
         const item = grouped.get(key);
-        item.volume_m3 += Number(row.volume_m3) || 0;
+        item.quantity += quantity;
         item.element_count += Number(row.element_count) || 0;
         item.allocations.add(row.allocation);
       }
-      materialAll = [...grouped.values()].map(row => ({...row, allocations:[...row.allocations]})).sort((a,b)=>a.storey.localeCompare(b.storey,undefined,{numeric:true}) || a.material.localeCompare(b.material));
+      const unitOrder = unit => unit === 'm³' ? 0 : unit === 'm²' ? 1 : 2;
+      materialAll = [...grouped.values()].map(row => ({...row, allocations:[...row.allocations]})).sort((a,b)=>a.storey.localeCompare(b.storey,undefined,{numeric:true}) || a.material.localeCompare(b.material,undefined,{numeric:true}) || unitOrder(a.unit)-unitOrder(b.unit));
       const levels = [...new Set(materialAll.map(row=>row.storey))];
       $('materialLevel').innerHTML = '<option value="">모든 층</option>' + levels.map(level=>`<option>${esc(level)}</option>`).join('');
       const processed = Number(result.processed_elements) || 0;
@@ -209,14 +267,45 @@
       const level = $('materialLevel').value;
       const query = $('materialSearch').value.trim().toLowerCase();
       materialView = materialAll.filter(row => (!level || row.storey === level) && (!query || row.material.toLowerCase().includes(query)));
-      $('materialRows').innerHTML = materialView.length ? materialView.map(row => {
-        const price = Number(unitPrices[row.material]) || 0;
-        return `<tr><td>${esc(row.storey)}</td><td>${esc(row.material)}</td><td class="money">${row.element_count.toLocaleString()}</td><td>${row.allocations.map(allocationLabel).join(', ')}</td><td class="money">${row.volume_m3.toLocaleString('ko-KR',{minimumFractionDigits:3,maximumFractionDigits:3})}</td><td><input class="price-input" data-material="${encodeURIComponent(row.material)}" type="number" min="0" step="1000" value="${price || ''}" placeholder="0"></td><td class="money">${won(row.volume_m3 * price)}</td></tr>`;
-      }).join('') : '<tr><td colspan="7" class="empty">조건에 맞는 재료가 없습니다.</td></tr>';
-      const volume = materialView.reduce((sum,row)=>sum+row.volume_m3,0);
-      const cost = materialView.reduce((sum,row)=>sum+row.volume_m3*(Number(unitPrices[row.material])||0),0);
+      if (materialView.length) {
+        const materialGroups = new Map();
+        for (const row of materialView) {
+          const key = `${row.storey}\u0000${row.material}`;
+          if (!materialGroups.has(key)) materialGroups.set(key,{material:row.material,rows:[]});
+          materialGroups.get(key).rows.push(row);
+        }
+        const unitOrder = unit => unit === 'm³' ? 0 : unit === 'm²' ? 1 : 2;
+        let materialIndex = 0;
+        $('materialRows').innerHTML = [...materialGroups.values()].map(group => {
+          const rows = group.rows.sort((a,b)=>unitOrder(a.unit)-unitOrder(b.unit));
+          const separated = materialIndex++ ? 'material-start' : '';
+          return rows.map((row,rowIndex) => {
+            const price = rowPrice(row);
+            const materialCell = rowIndex === 0 ? `<td class="shared-material" rowspan="${rows.length}">${esc(group.material)}</td>` : '';
+            return `<tr class="${rowIndex === 0 ? separated : 'same-material'}">${materialCell}<td class="money">${row.element_count.toLocaleString()}</td><td>${row.allocations.map(allocationLabel).join(', ')}</td><td class="quantity-unit">${row.quantity.toLocaleString('ko-KR',{minimumFractionDigits:3,maximumFractionDigits:3})} ${esc(row.unit)}</td><td><input class="price-input" data-price-key="${encodeURIComponent(priceKey(row))}" type="number" min="0" step="1000" value="${price || ''}" placeholder="0"></td><td class="money">${won(row.quantity * price)}</td></tr>`;
+          }).join('');
+        }).join('');
+      } else {
+        $('materialRows').innerHTML = '<tr><td colspan="6" class="empty">조건에 맞는 재료 또는 Tag가 없습니다.</td></tr>';
+      }
+      const volume = materialView.filter(row=>row.unit==='m³').reduce((sum,row)=>sum+row.quantity,0);
+      const area = materialView.filter(row=>row.unit==='m²').reduce((sum,row)=>sum+row.quantity,0);
+      const cost = materialView.reduce((sum,row)=>sum+row.quantity*rowPrice(row),0);
       $('materialVolume').textContent = `${volume.toLocaleString('ko-KR',{minimumFractionDigits:3,maximumFractionDigits:3})} m³`;
+      $('materialArea').textContent = `${area.toLocaleString('ko-KR',{minimumFractionDigits:3,maximumFractionDigits:3})} m²`;
       $('materialCost').textContent = won(cost);
+    }
+    function beginTakeoffAnalysis(files) {
+      const names = files.map(file=>compactFileName(file.name,24)).join(' + ');
+      materialAll=[];
+      materialView=[];
+      $('materialLevel').innerHTML='<option value="">모든 층</option>';
+      $('materialSearch').value='';
+      $('materialVolume').textContent='분석 중…';
+      $('materialArea').textContent='분석 중…';
+      $('materialCost').textContent='계산 중…';
+      $('takeoffStatus').textContent=`${names} 분석 중…`;
+      $('materialRows').innerHTML='<tr><td colspan="6" class="empty takeoff-loading">새 모델의 체적·면적과 예상 비용을 분석하는 중입니다…</td></tr>';
     }
     async function fetchWithTimeout(url, options={}, timeoutMs=30000) {
       const controller = new AbortController();
@@ -298,7 +387,7 @@
       const query = $('layerSearch').value.trim().toLowerCase();
       const storey = $('layerStorey').value;
       const rows = sortedLayers().filter(([,layer]) => (!storey || layer.storey===storey) && (!query || [layer.storey,layer.name,layer.material,layer.type].some(value=>value.toLowerCase().includes(query))));
-      $('layerRows').innerHTML = rows.length ? rows.map(([key,layer])=>`<tr><td><input class="visibility-check" type="checkbox" data-layer-key="${encodeURIComponent(key)}" ${layer.visible?'checked':''} aria-label="${esc(layer.name)} 표시"></td><td>${esc(layer.storey)}</td><td>${esc(layer.name)}</td><td>${esc(layer.material)}</td><td>${esc(layer.type)}</td><td class="money">${layer.elementIds.size.toLocaleString()}</td></tr>`).join('') : '<tr><td colspan="6" class="empty">조건에 맞는 레이어가 없습니다.</td></tr>';
+      $('layerRows').innerHTML = rows.length ? rows.map(([key,layer])=>`<tr><td><input class="visibility-check" type="checkbox" data-layer-key="${encodeURIComponent(key)}" ${layer.visible?'checked':''} aria-label="${esc(layer.name)} 표시"></td><td>${esc(layer.storey)}</td><td>${esc(layer.name)}</td><td>${esc(layer.material)}</td><td>${esc(layer.type)}</td><td class="money">${layer.elementIds.size.toLocaleString()}</td><td>${esc(layer.status || '—')}</td><td class="money">${Number.isFinite(layer.volumeM3) ? layer.volumeM3.toLocaleString('ko-KR',{minimumFractionDigits:3,maximumFractionDigits:3}) : '—'}</td><td class="money">${Number.isFinite(layer.openAreaM2) ? layer.openAreaM2.toLocaleString('ko-KR',{minimumFractionDigits:3,maximumFractionDigits:3}) : '—'}</td></tr>`).join('') : '<tr><td colspan="9" class="empty">조건에 맞는 레이어가 없습니다.</td></tr>';
     }
     function setAllLayers(visible) {
       for (const layer of modelLayers.values()) {
@@ -446,7 +535,7 @@
       fitModel(modelGroup);
       const storeyNames=[...new Set([...modelLayers.values()].map(layer=>layer.storey))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
       $('layerStorey').innerHTML='<option value="">모든 층</option>'+storeyNames.map(name=>`<option>${esc(name)}</option>`).join('');
-      $('source').textContent=label;
+      setSourceName(label);
       renderLayers();
       $('viewerNote').textContent = `${label} · 3D 메시 ${meshCount.toLocaleString()}개`;
     }
@@ -466,6 +555,129 @@
       }
       return {materialError:null};
     }
+    function getOpenSkpModule() {
+      if (!openSkpModulePromise) openSkpModulePromise = import(OPENSKP_MODULE_URL);
+      return openSkpModulePromise;
+    }
+    function skpMaterial(definition) {
+      const factor = definition?.pbrMetallicRoughness?.baseColorFactor || [0.55,0.68,0.76,1];
+      const rgb = (factor[0] ?? 0) + (factor[1] ?? 0) + (factor[2] ?? 0) < 0.06 ? [0.55,0.68,0.76] : factor;
+      return new THREE.MeshLambertMaterial({
+        color:new THREE.Color(rgb[0] ?? 0.55, rgb[1] ?? 0.68, rgb[2] ?? 0.76),
+        opacity:factor[3] ?? 1,
+        transparent:(factor[3] ?? 1) < 0.99,
+        side:THREE.DoubleSide
+      });
+    }
+    function analyzeClosedMesh(primitives, tolerance) {
+      const edges = new Map();
+      let signedVolume = 0;
+      let surfaceAreaM2 = 0;
+      let triangleCount = 0;
+      const vertexKey = (positions, index) => {
+        const offset = index * 3;
+        return `${Math.round(positions[offset] / tolerance)},${Math.round(positions[offset+1] / tolerance)},${Math.round(positions[offset+2] / tolerance)}`;
+      };
+      const addEdge = (a,b) => {
+        const key = a < b ? `${a}|${b}` : `${b}|${a}`;
+        edges.set(key, (edges.get(key) || 0) + 1);
+      };
+      for (const primitive of primitives) {
+        const p = primitive.positions, ids = primitive.indices;
+        for (let i=0; i+2<ids.length; i+=3) {
+          const ia=ids[i], ib=ids[i+1], ic=ids[i+2];
+          const a=ia*3, b=ib*3, c=ic*3;
+          const ka=vertexKey(p,ia), kb=vertexKey(p,ib), kc=vertexKey(p,ic);
+          if (ka===kb || kb===kc || kc===ka) continue;
+          addEdge(ka,kb); addEdge(kb,kc); addEdge(kc,ka);
+          const abx=p[b]-p[a], aby=p[b+1]-p[a+1], abz=p[b+2]-p[a+2];
+          const acx=p[c]-p[a], acy=p[c+1]-p[a+1], acz=p[c+2]-p[a+2];
+          const crossX=aby*acz-abz*acy, crossY=abz*acx-abx*acz, crossZ=abx*acy-aby*acx;
+          surfaceAreaM2 += Math.hypot(crossX,crossY,crossZ) / 2;
+          signedVolume += (
+            p[a] * (p[b+1]*p[c+2] - p[b+2]*p[c+1]) -
+            p[a+1] * (p[b]*p[c+2] - p[b+2]*p[c]) +
+            p[a+2] * (p[b]*p[c+1] - p[b+1]*p[c])
+          ) / 6;
+          triangleCount++;
+        }
+      }
+      const closed = triangleCount >= 4 && edges.size > 0 && [...edges.values()].every(count => count === 2);
+      return {closed, volumeM3:closed ? Math.abs(signedVolume) : 0, surfaceAreaM2, triangleCount};
+    }
+    async function loadSkpFile(file) {
+      $('viewerNote').textContent = `${file.name} · OpenSKP 엔진을 불러오는 중...`;
+      const {buildScene} = await getOpenSkpModule();
+      $('viewerNote').textContent = `${file.name} · SketchUp 형상과 Tag를 분석하는 중...`;
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      const skpScene = buildScene(await file.arrayBuffer(), {
+        respectEdgeVisibility:true,
+        onProgress:progress => {
+          if (progress?.total) $('viewerNote').textContent = `${file.name} · ${progress.stage} ${Math.round(progress.current/progress.total*100)}%`;
+        }
+      });
+      if (!skpScene.glbPrimitives?.length) throw new Error('표시 가능한 면 형상을 찾지 못했습니다.');
+      const nextGroup = new THREE.Group();
+      const materialCache = new Map();
+      const objects = new Map();
+      for (const primitive of skpScene.glbPrimitives) {
+        const metadata = skpScene.meshIndex?.[primitive.geomName] || {};
+        const path = metadata.path || primitive.geomName;
+        if (!objects.has(path)) objects.set(path, {
+          path,
+          name:metadata.name || metadata.definitionName || path.split('/').pop() || '이름 없음',
+          layer:metadata.layer || 'Tag 없음',
+          primitives:[], meshes:[]
+        });
+        const object = objects.get(path);
+        object.primitives.push(primitive);
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(primitive.positions,3));
+        if (primitive.normals?.length) geometry.setAttribute('normal',new THREE.BufferAttribute(primitive.normals,3));
+        else geometry.computeVertexNormals();
+        geometry.setIndex(new THREE.BufferAttribute(primitive.indices,1));
+        const materialIndex = Number.isFinite(primitive.materialIndex) ? primitive.materialIndex : -1;
+        if (!materialCache.has(materialIndex)) materialCache.set(materialIndex, skpMaterial(skpScene.gltfMaterials?.[materialIndex]));
+        const mesh = new THREE.Mesh(geometry,materialCache.get(materialIndex));
+        mesh.userData.objectPath=path;
+        nextGroup.add(mesh);
+        object.meshes.push(mesh);
+      }
+      const extent = Math.max(...(skpScene.bounds?.size || [1]));
+      const tolerance = Math.max(1e-7,Math.min(1e-4,extent*1e-8));
+      for (const object of objects.values()) Object.assign(object,analyzeClosedMesh(object.primitives,tolerance));
+      const nextLayers = new Map();
+      for (const object of objects.values()) {
+        const key = object.layer;
+        if (!nextLayers.has(key)) nextLayers.set(key,{storey:'SketchUp',name:key,material:key,type:'SKP Tag',meshes:[],elementIds:new Set(),visible:true,solidCount:0,openCount:0,volumeM3:0,openAreaM2:0});
+        const layer = nextLayers.get(key);
+        layer.meshes.push(...object.meshes);
+        layer.elementIds.add(object.path);
+        if (object.closed) { layer.solidCount++; layer.volumeM3 += object.volumeM3; }
+        else { layer.openCount++; layer.openAreaM2 += object.surfaceAreaM2; }
+      }
+      for (const layer of nextLayers.values()) layer.status = `${layer.solidCount} 닫힘 / ${layer.openCount} 열림`;
+      disposeModel();
+      modelGroup=nextGroup; modelLayers=nextLayers; scene.add(modelGroup); fitModel(modelGroup);
+      $('layerStorey').innerHTML='<option value="">모든 분류</option><option>SketchUp</option>';
+      setSourceName(file.name); renderLayers();
+      const closedObjects=[...objects.values()].filter(object=>object.closed);
+      const openObjects=objects.size-closedObjects.length;
+      setMaterialData({
+        rows:[...nextLayers.values()].flatMap(layer=>[
+          ...(layer.solidCount ? [{storey:'SketchUp',material:layer.name,quantity:layer.volumeM3,unit:'m³',element_count:layer.solidCount,allocation:'closed-solid'}] : []),
+          ...(layer.openCount ? [{storey:'SketchUp',material:layer.name,quantity:layer.openAreaM2,unit:'m²',element_count:layer.openCount,allocation:'open-surface'}] : [])
+        ]),
+        processed_elements:objects.size,
+        skipped_elements:openObjects,
+        warnings:[
+          'SKP 체적은 모든 닫힌 객체의 기하 체적이며 콘크리트 사용량과 동일하지 않습니다. 콘크리트 Tag만 별도로 검토하세요.',
+          ...(openObjects ? [`열린 형상 ${openObjects.toLocaleString()}개는 체적 대신 면적으로 산출했습니다.`] : [])
+        ]
+      });
+      $('viewerNote').textContent=`${file.name} · 객체 ${objects.size.toLocaleString()}개 · 닫힌 형상 ${closedObjects.length.toLocaleString()}개`;
+      return {materialError:null};
+    }
     function setDropState(message, state='') {
       drop.classList.remove('over','error','success');
       if (state) drop.classList.add(state);
@@ -474,18 +686,19 @@
     async function handleFiles(fileList) {
       const files = [...fileList];
       if (!files.length) return;
-      const supported = files.filter(file => /\.ifc$/i.test(file.name));
-      const rejected = files.filter(file => !/\.ifc$/i.test(file.name));
+      const supported = files.filter(file => /\.(ifc|skp)$/i.test(file.name));
+      const rejected = files.filter(file => !/\.(ifc|skp)$/i.test(file.name));
       if (!supported.length) {
-        setDropState('지원하지 않는 파일입니다. IFC 파일을 선택하세요.', 'error');
+        setDropState('지원하지 않는 파일입니다. IFC 또는 SKP 파일을 선택하세요.', 'error');
         return;
       }
+      beginTakeoffAnalysis(supported);
       setDropState(`${supported.length}개 파일을 처리하는 중...`);
       const failures = [];
       const materialWarnings = [];
       for (const file of supported) {
         try {
-          const result = await loadIfcFile(file);
+          const result = /\.skp$/i.test(file.name) ? await loadSkpFile(file) : await loadIfcFile(file);
           if (result.materialError) materialWarnings.push(`${file.name}: ${result.materialError.message}`);
         } catch (error) {
           failures.push(`${file.name}: ${error.message}`);
@@ -503,6 +716,8 @@
       }
     }
     $('ifcInput').addEventListener('change', e => handleFiles(e.target.files));
+    $('skpOpen').addEventListener('click', () => $('skpInput').click());
+    $('skpInput').addEventListener('change', e => handleFiles(e.target.files));
     $('dropInput').addEventListener('change', e => handleFiles(e.target.files));
     $('layerSearch').addEventListener('input',renderLayers);
     $('layerStorey').addEventListener('change',renderLayers);
@@ -510,8 +725,8 @@
     $('materialSearch').addEventListener('input', renderMaterials);
     $('materialRows').addEventListener('change', event => {
       if (!event.target.classList.contains('price-input')) return;
-      const material = decodeURIComponent(event.target.dataset.material);
-      unitPrices[material] = Math.max(0, Number(event.target.value) || 0);
+      const key = decodeURIComponent(event.target.dataset.priceKey);
+      unitPrices[key] = Math.max(0, Number(event.target.value) || 0);
       localStorage.setItem('bim-material-unit-prices', JSON.stringify(unitPrices));
       renderMaterials();
     });
@@ -529,7 +744,7 @@
       };
       let applied = 0;
       for (const row of materialAll) {
-        if (patterns[category].test(row.material)) { unitPrices[row.material] = price; applied++; }
+        if (patterns[category].test(row.material)) { unitPrices[priceKey(row)] = price; applied++; }
       }
       localStorage.setItem('bim-material-unit-prices', JSON.stringify(unitPrices));
       renderMaterials();
@@ -549,23 +764,23 @@
     $('resetAll').addEventListener('click', () => {
       disposeModel(); materialAll=[]; materialView=[];
       $('layerSearch').value=''; $('layerStorey').innerHTML='<option value="">모든 층</option>';
-      $('source').textContent='파일을 선택하세요'; renderLayers();
+      setSourceName('파일을 선택하세요'); renderLayers();
       $('materialLevel').innerHTML='<option value="">모든 층</option>'; $('materialSearch').value=''; renderMaterials();
-      $('takeoffStatus').textContent='IFC 분석 대기'; $('viewerNote').textContent='IFC 파일을 열면 3D 모델이 표시됩니다.';
-      $('ifcInput').value=''; $('dropInput').value='';
-      setDropState('IFC 파일을 여기에 끌어놓기');
+      $('takeoffStatus').textContent='모델 분석 대기'; $('viewerNote').textContent='IFC 또는 SKP 파일을 열면 3D 모델이 표시됩니다.';
+      $('ifcInput').value=''; $('skpInput').value=''; $('dropInput').value='';
+      setDropState('IFC 또는 SKP 파일을 여기에 끌어놓기');
     });
     $('exportMaterials').addEventListener('click', () => {
       if (!materialView.length) { alert('저장할 재료 산출 결과가 없습니다.'); return; }
       const quote = value => `"${String(value).replaceAll('"','""')}"`;
-      const lines = [['층','재료','요소 수','체적 배분','체적(m3)','단가(원/m3)','재료비(원)']];
+      const lines = [['분류','재료/Tag','요소 수','산출 방식','수량','단위','단가(원/단위)','예상 비용(원)']];
       for (const row of materialView) {
-        const price = Number(unitPrices[row.material]) || 0;
-        lines.push([row.storey,row.material,row.element_count,row.allocations.map(allocationLabel).join(', '),row.volume_m3,price,Math.round(row.volume_m3*price)]);
+        const price = rowPrice(row);
+        lines.push([row.storey,row.material,row.element_count,row.allocations.map(allocationLabel).join(', '),row.quantity,row.unit,price,Math.round(row.quantity*price)]);
       }
       const csv = '\uFEFF' + lines.map(line=>line.map(quote).join(',')).join('\r\n');
       const url = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
-      const link = document.createElement('a'); link.href=url; link.download='IFC_재료_체적_견적.csv'; link.click();
+      const link = document.createElement('a'); link.href=url; link.download='BIM_체적_면적_견적.csv'; link.click();
       setTimeout(()=>URL.revokeObjectURL(url),1000);
     });
     const drop=$('drop');
@@ -588,5 +803,6 @@
     });
     initIfcViewer();
   </script>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </body>
 </html>
